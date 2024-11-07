@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>비동기</title>
+</head>
+<body>
+<h1>비동기(async)=> 함수가 promise리턴
+      대기(await)=> 실행을 일시 중지하고 promise가 끝날 때까지 기다림</h1>
+<p id="d"></p>
+<script>
+    async function myView() {
+        let newP = new Promise(function(resolve) {
+            setTimeout(function() {resolve("5분 대기");}, 1000);
+        });
+        document.getElementById("d").innerHTML = await newP;
+    }
+mtView();
+</script>
+
+
+<h1>비동기</h1>
+<pre>
+- 다른 함수와 병렬로 실행되는 함수를 비동기라고 합니다
+- setTimeout()
+</pre>
+<p id="demo"></p> 
+<p id="after"></p>
+<h1 id="time"></h1>
+<script>
+myDisplayer = (something) => {//2
+    document.getElementById('demo').innerHTML = something
+}
+myCalculator = (num1, num2, myCallback) => {//1
+let sum = num1 + num2;
+myCallback(sum);
+}
+
+myCalculator(5, 5, myDisplayer);
+
+//setTimeout
+
+myFunction = () => {
+    document.getElementById("after").innerHTML = "3초후에 나타남";
+}
+
+setTimeout(myFunction, 3000);
+
+//지정한 초마다 나타나기 setInterval
+WhatTime = () => {
+    let d = new Date();
+    document.getElementById("time").innerHTML = 
+    d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+}
+
+setInterval(WhatTime, 1000);
+   </script>
+
+<pre>
+비동기 프로그래밍을 사용하면 javascript에서 오래 실행되는 작업을 시작하고
+다른 작업을 병렬로 실행할 수 있습니다
+작성하기 어렵고 디버깅 하기가 힘듭니다
+그래서 최신 비동기는 콜백을 사용하지 않습니다
+대신 Promise를 사용하여 해결합니다
+</pre>
+<h1>promise</h1>
+<pre>
+- 코드생성 : 시간이 걸릴 수 있는 코드
+- 소비코드 : 결과를 기다려야 하는 코드
+- promise는 producing코드와 Consuming코드를 연결하는 객체입니다
+- Promise 객체 속성
+1) Pending (보류중[한정되지 않은])
+2) Fulfilled (결과값)
+3) Rejected (거부됨[오류 객체])
+
+.then() 결과값에 대한 콜백과 실패에 대한 콜백이라는 두개의 인수를 받습니다
+</pre>
+
+<p id="callback"></p>
+<script>
+View = (some) => {
+    document.getElementById('callback').innerHTML = some;
+}
+
+let myPromise = new Promise(function(myResolve, myReject){
+    let x = 0;
+
+    if(x== 0) {
+        myResolve("OK");
+    }else{
+        myReject("넌 오류야 500에러 그잡채");
+    }
+}) 
+
+myPromise.then(//성공에 대한 콜백과 실패에 대한 콜백이라는 두개의 인수를 받습니다
+    function(value) {View(value)},
+    function(error) {View(error)}
+)
+</script>
+</body>
+</html>
